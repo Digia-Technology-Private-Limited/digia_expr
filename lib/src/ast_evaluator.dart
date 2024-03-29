@@ -11,8 +11,9 @@ class ASTEvaluator {
     final enclosing = ExprContext(variables: {...StdLibFunctions.functions});
     if (context == null) {
       _context = enclosing;
+    } else {
+      _context = context..enclosing = enclosing;
     }
-    _context = context?..enclosing = enclosing;
   }
 
   Object? eval(ASTNode node) {

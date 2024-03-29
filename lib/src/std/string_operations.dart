@@ -20,7 +20,7 @@ class ConcatOp implements ExprCallable {
   Object? call(ASTEvaluator evaluator, List<Object> arguments) {
     final StringBuffer sb = StringBuffer();
     for (final arg in arguments) {
-      final o = toValue(evaluator, arg);
+      final o = toValue<String>(evaluator, arg);
       sb.write(o.toString());
     }
     return sb.toString();

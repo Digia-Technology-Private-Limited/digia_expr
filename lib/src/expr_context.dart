@@ -3,11 +3,11 @@ import 'package:digia_expr/src/ast.dart';
 class ExprContext {
   ExprContext? enclosing;
 
-  Map<String, ASTNode> variables;
+  Map<String, Object> variables;
 
   ExprContext({required this.variables, this.enclosing});
 
-  ASTNode? get(String key) {
+  Object? get(String key) {
     if (variables.containsKey(key)) {
       return variables[key];
     }

@@ -13,7 +13,8 @@ abstract class Visitor<T> {
   T visitASTNumberLiteral(ASTNumberLiteral node);
   T visitASTStringExpression(ASTStringExpression node);
   T visitASTStringLiteral(ASTStringLiteral node);
-  T visitASTIdentifer(ASTIdentifer node);
+  T visitASTVariable(ASTVariable node);
+  T visitASTGetExpr(ASTGetExpr node);
 }
 
 class ASTVisitorEvaluator extends Visitor<Object?> {
@@ -27,12 +28,12 @@ class ASTVisitorEvaluator extends Visitor<Object?> {
   }) : functionHandlers = {...StdLibFunctions.functions, ...?functions};
 
   @override
-  Object? visitASTIdentifer(ASTIdentifer node) {
-    final valueFromContext = context?.get(node.name);
-    if (valueFromContext == null) {
-      throw 'Value for variable: ${node.name} is not found';
-    }
-    return valueFromContext.visit(this);
+  Object? visitASTVariable(ASTVariable node) {
+    // final valueFromContext = context?.get(node.name);
+    // if (valueFromContext == null) {
+    //   throw 'Value for variable: ${node.name} is not found';
+    // }
+    // return valueFromContext.visit(this);
   }
 
   @override
@@ -65,5 +66,11 @@ class ASTVisitorEvaluator extends Visitor<Object?> {
   @override
   Object? visitProgram(ASTProgram node) {
     return node.body.first.visit(this);
+  }
+
+  @override
+  Object? visitASTGetExpr(ASTGetExpr node) {
+    // TODO: implement visitASTGetExpr
+    throw UnimplementedError();
   }
 }

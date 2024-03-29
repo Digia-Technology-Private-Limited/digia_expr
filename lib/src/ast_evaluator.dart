@@ -5,11 +5,15 @@ import 'package:digia_expr/src/std/string_operations.dart';
 import 'package:digia_expr/src/std/types.dart';
 
 class ASTEvaluator {
-  final Map<String, ExprCallable> functionHandlers;
-  final ExprContext? context;
+  ExprContext? _context;
 
-  ASTEvaluator({this.context, Map<String, ExprCallable>? functions = const {}})
-      : functionHandlers = {...StdLibFunctions.functions, ...?functions};
+  ASTEvaluator({ExprContext? context}) {
+    final enclosing = ExprContext(variables: {...StdLibFunctions.functions});
+    if (context == null) {
+      _context = enclosing;
+    }
+    _context = context?..enclosing = enclosing;
+  }
 
   Object? eval(ASTNode node) {
     Object? result;
@@ -21,6 +25,9 @@ class ASTEvaluator {
       case ASTNumberLiteral():
         result = node.value;
 
+      case ASTBooleanLiteral():
+        result = node.value;
+
       case ASTStringLiteral():
         result = node.value;
 
@@ -28,18 +35,22 @@ class ASTEvaluator {
         result = ConcatOp().call(this, node.parts);
 
       case ASTCallExpression():
-        final fn = functionHandlers[node.fnName];
-        if (fn == null) {
-          throw 'A Function with name: ${node.fnName} is not found';
+        final callee = eval(node.fnName);
+        if (callee is! ExprCallable) {
+          throw 'Invalid Function: ${node.fnName.toString()}';
         }
-        result = fn.call(this, node.expressions);
 
-      case ASTIdentifer():
-        final valueFromContext = context?.get(node.name);
+        result = callee.call(this, node.expressions);
+
+      case ASTVariable():
+        final valueFromContext = _context?.get(node.name.lexeme);
         if (valueFromContext == null) {
           throw 'Value for variable: ${node.name} is not found';
         }
-        result = eval(valueFromContext);
+
+        result = (valueFromContext is ASTNode)
+            ? eval(valueFromContext)
+            : valueFromContext;
 
       default:
         throw UnimplementedError('${node.runtimeType} is not implemented');

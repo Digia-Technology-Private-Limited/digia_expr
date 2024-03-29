@@ -1,4 +1,5 @@
 import 'package:digia_expr/src/std/types.dart';
+import 'package:digia_expr/src/token.dart';
 import 'package:digia_expr/src/visitor.dart';
 
 enum AstNodeType {
@@ -7,14 +8,31 @@ enum AstNodeType {
   numberLiteral,
   stringExpression,
   stringLiteral,
-  identifer,
-  subExpression
+  variable,
+  subExpression,
+  getExpr,
+  boolean
 }
 
 abstract class ASTNode {
   AstNodeType get type;
 
   T visit<T>(Visitor<T> visitor) => visitor.visitAst(this);
+}
+
+class ASTBooleanLiteral extends ASTNode {
+  @override
+  AstNodeType get type => AstNodeType.boolean;
+
+  bool? get value => switch (token.type) {
+        TokenType.yes => true,
+        TokenType.no => false,
+        _ => null
+      };
+
+  final Token token;
+
+  ASTBooleanLiteral({required this.token});
 }
 
 class ASTProgram extends ASTNode {
@@ -35,7 +53,7 @@ class ASTCallExpression extends ASTNode {
   @override
   AstNodeType get type => AstNodeType.function;
 
-  String fnName;
+  ASTNode fnName;
   List<ASTNode> expressions;
 
   ASTCallExpression({
@@ -97,14 +115,30 @@ class ASTStringLiteral extends ASTNode {
   T visit<T>(Visitor<T> visitor) => visitor.visitASTStringLiteral(this);
 }
 
-class ASTIdentifer extends ASTNode {
+class ASTVariable extends ASTNode {
   @override
-  AstNodeType get type => AstNodeType.identifer;
+  AstNodeType get type => AstNodeType.variable;
 
-  String name;
+  Token name;
 
-  ASTIdentifer({required this.name});
+  ASTVariable({required this.name});
 
   @override
-  T visit<T>(Visitor<T> visitor) => visitor.visitASTIdentifer(this);
+  T visit<T>(Visitor<T> visitor) => visitor.visitASTVariable(this);
+}
+
+class ASTGetExpr extends ASTNode {
+  @override
+  AstNodeType get type => AstNodeType.getExpr;
+
+  Token name;
+  ASTNode expr;
+
+  ASTGetExpr({
+    required this.name,
+    required this.expr,
+  });
+
+  @override
+  T visit<T>(Visitor<T> visitor) => visitor.visitASTGetExpr(this);
 }

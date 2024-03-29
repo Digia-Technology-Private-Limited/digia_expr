@@ -7,19 +7,20 @@ class Expression {
     final trimmed = source.trim();
 
     if (isExpression(trimmed)) {
-      final root = createAST(trimmed);
+      final root = createAST(trimmed.substring(2, trimmed.length - 1));
 
       return ASTEvaluator(context: context).eval(root);
     }
 
     // Case of String interpolation
     if (hasExpression(trimmed)) {
-      final root = createAST('\'$trimmed\'');
+      final root = createAST(trimmed);
       final result = ASTEvaluator(context: context).eval(root) as String?;
       return result?.substring(1, result.length - 1);
     }
 
-    return source;
+    final root = createAST(trimmed);
+    return ASTEvaluator(context: context).eval(root);
   }
 
   static const stringExpressionRegex = r'\$\{\s{0,}(.+)\s{0,}\}';

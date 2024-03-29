@@ -7,11 +7,13 @@ enum TokenType {
   semicolon,
   newLine,
   //Literals.
-  identifier,
+  variable,
   string,
   integer,
   float,
   //Keywords.
+  no,
+  yes,
   eof
 }
 

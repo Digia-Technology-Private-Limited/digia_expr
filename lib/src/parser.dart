@@ -13,7 +13,7 @@ class Parser {
 
   int _current = 0;
 
-  Token? _peek() => _isAtEnd() ? null : tokens[_current + 1];
+  Token? _peek() => _current + 1 < tokens.length ? tokens[_current + 1] : null;
   bool _isAtEnd() =>
       _current > tokens.length; // Last token will be TokenType.eof
   _advance({int by = 1}) => _current = _current + by;
@@ -57,6 +57,11 @@ class Parser {
           _advance();
           return ASTNumberLiteral(value: int.tryParse(token.lexeme));
 
+        case TokenType.yes:
+        case TokenType.no:
+          _advance();
+          return ASTBooleanLiteral(token: token);
+
         case TokenType.string:
           if (RegExp(stringExpressionRegex).hasMatch(token.lexeme)) {
             final parts = _createStringExpression(token.lexeme);
@@ -76,27 +81,46 @@ class Parser {
           _advance();
           return ASTStringLiteral(value: token.lexeme);
 
-        case TokenType.identifier:
-          if (_peek()?.type == TokenType.leftParen) {
+        case TokenType.variable:
+          // if Neither x.y nor x(), then 'x' is a Variable.
+          if (_peek()?.type != TokenType.leftParen &&
+              _peek()?.type != TokenType.dot) {
             _advance();
-            final node =
-                ASTCallExpression(fnName: token.lexeme, expressions: []);
-            token = _next();
-            while (token.type != TokenType.rightParen) {
-              node.expressions.add(walk());
-              token = tokens[_current];
-              if (token.type != TokenType.rightParen) {
-                _consume(
-                    TokenType.comma, "Expected , after a function argument");
-              }
-              token = tokens[_current];
-            }
-            _consume(TokenType.rightParen, "Missing ) at the end of function");
-            return node;
+            return ASTVariable(name: token);
           }
 
-          _advance();
-          return ASTIdentifer(name: token.lexeme);
+          // While loop for the chain.
+          // a.b.c, Or,
+          // a.b.c(), Or,
+          // a.b().c
+          ASTNode expr = ASTVariable(name: token);
+          while (_peek()?.type == TokenType.leftParen ||
+              _peek()?.type == TokenType.dot) {
+            if (_peek()?.type == TokenType.leftParen) {
+              _advance();
+
+              final node = ASTCallExpression(fnName: expr, expressions: []);
+              token = _next();
+              while (token.type != TokenType.rightParen) {
+                node.expressions.add(walk());
+                token = tokens[_current];
+                if (token.type != TokenType.rightParen) {
+                  _consume(
+                      TokenType.comma, "Expected , after a function argument");
+                }
+                token = tokens[_current];
+              }
+              _consume(
+                  TokenType.rightParen, "Missing ) at the end of function");
+              expr = node;
+            } else if (_peek()?.type == TokenType.dot) {
+              _advance();
+              expr = ASTGetExpr(name: _next(), expr: expr);
+            } else {
+              break;
+            }
+          }
+          return expr;
 
         default:
           throw "Unexpected token: ${token.type}";

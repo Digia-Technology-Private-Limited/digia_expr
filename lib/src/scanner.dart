@@ -153,6 +153,20 @@ class Scanner {
       char = _next();
       nameEndPos = _currIdx;
     }
-    _addToken(TokenType.identifier, source.substring(nameStartPos, nameEndPos));
+    final string = source.substring(nameStartPos, nameEndPos);
+    switch (string) {
+      case 'true':
+      case 'True':
+        _addToken(TokenType.yes, 'true');
+        break;
+
+      case 'false':
+      case 'False':
+        _addToken(TokenType.no, 'true');
+        break;
+
+      default:
+        _addToken(TokenType.variable, string);
+    }
   }
 }

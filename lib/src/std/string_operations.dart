@@ -1,3 +1,4 @@
+import 'package:digia_expr/digia_expr.dart';
 import 'package:digia_expr/src/ast_evaluator.dart';
 import 'package:digia_expr/src/std/util.dart';
 
@@ -20,7 +21,8 @@ class ConcatOp implements ExprCallable {
   Object? call(ASTEvaluator evaluator, List<Object> arguments) {
     final StringBuffer sb = StringBuffer();
     for (final arg in arguments) {
-      final o = toValue<String>(evaluator, arg);
+      final o =
+          arg is ASTNode ? evaluator.eval(arg)?.toString() : arg.toString();
       sb.write(o.toString());
     }
     return sb.toString();

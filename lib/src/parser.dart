@@ -66,7 +66,6 @@ class Parser {
           if (RegExp(stringExpressionRegex).hasMatch(token.lexeme)) {
             final parts = _createStringExpression(token.lexeme);
             _advance();
-            print(parts);
             return ASTStringExpression(parts: parts);
           } else {
             _advance();

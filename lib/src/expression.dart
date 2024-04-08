@@ -14,9 +14,9 @@ class Expression {
 
     // Case of String interpolation
     if (hasExpression(trimmed)) {
-      final root = createAST(trimmed);
+      final root = createAST(_wrapWithQuotes(trimmed));
       final result = ASTEvaluator(context: context).eval(root) as String?;
-      return result?.substring(1, result.length - 1);
+      return result;
     }
 
     final root = createAST(trimmed);
@@ -33,4 +33,11 @@ class Expression {
     final trimmed = s.trim();
     return (trimmed.startsWith(r'${') && trimmed.endsWith(r'}'));
   }
+}
+
+String _wrapWithQuotes(String string) {
+  if (string.startsWith('\'') && string.endsWith('\'')) {
+    return string;
+  }
+  return "'$string'";
 }

@@ -120,7 +120,7 @@ class Scanner {
     // Skip the Closing Quote
     _advance();
     _addToken(
-        TokenType.string, source.substring(leftQuotePos, rightQuotePos + 1));
+        TokenType.string, source.substring(leftQuotePos + 1, rightQuotePos));
   }
 
   void _scanNumber() {

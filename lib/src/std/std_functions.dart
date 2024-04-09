@@ -1,8 +1,9 @@
 import 'package:digia_expr/src/ast_evaluator.dart';
 import 'package:digia_expr/src/std/math_operations.dart';
 import 'package:digia_expr/src/std/string_operations.dart';
-import 'package:digia_expr/src/std/types.dart';
 import 'package:digia_expr/src/std/util.dart';
+
+import '../types.dart';
 
 abstract class StdLibFunctions {
   static Map<String, ExprCallable> functions = {

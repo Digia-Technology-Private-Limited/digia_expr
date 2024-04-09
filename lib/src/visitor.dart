@@ -3,7 +3,7 @@ import 'package:digia_expr/src/ast.dart';
 import 'expr_context.dart';
 import 'std/std_functions.dart';
 
-import 'std/types.dart';
+import 'types.dart';
 
 abstract class Visitor<T> {
   T visitAst(ASTNode node) =>
@@ -29,6 +29,8 @@ class ASTVisitorEvaluator extends Visitor<Object?> {
 
   @override
   Object? visitASTVariable(ASTVariable node) {
+    return null;
+
     // final valueFromContext = context?.get(node.name);
     // if (valueFromContext == null) {
     //   throw 'Value for variable: ${node.name} is not found';

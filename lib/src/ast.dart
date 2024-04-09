@@ -1,6 +1,7 @@
-import 'package:digia_expr/src/std/types.dart';
 import 'package:digia_expr/src/token.dart';
 import 'package:digia_expr/src/visitor.dart';
+
+import 'types.dart';
 
 enum AstNodeType {
   program,

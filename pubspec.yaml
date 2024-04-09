@@ -6,6 +6,22 @@ version: 1.0.0
 environment:
   sdk: ^3.1.2
 
+# https://github.com/frencojobs/derry
+scripts:
+  i: flutter pub get
+  build: dart run build_runner build --delete-conflicting-outputs
+  clean:
+    build:
+      - flutter clean
+      - rm -rf pubspec.lock
+      - flutter pub get
+      - $build
+  format: dart format .
+  fix: dart fix --apply
+  lint: derry fix; derry format
+  analyze: dart analyze
+  analyse: derry analyze
+
 # Add regular dependencies here.
 dependencies:
   # path: ^1.8.0

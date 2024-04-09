@@ -2,7 +2,8 @@ import 'package:digia_expr/src/ast.dart';
 import 'package:digia_expr/src/expr_context.dart';
 import 'package:digia_expr/src/std/std_functions.dart';
 import 'package:digia_expr/src/std/string_operations.dart';
-import 'package:digia_expr/src/std/types.dart';
+
+import 'types.dart';
 
 class ASTEvaluator {
   ExprContext? _context;
@@ -52,6 +53,14 @@ class ASTEvaluator {
         result = (valueFromContext is ASTNode)
             ? eval(valueFromContext)
             : valueFromContext;
+
+      case ASTGetExpr():
+        final object = eval(node.expr);
+        if (object is! ExprClassInstance) {
+          throw 'Only class instances have properties';
+        }
+
+        result = object.get(node.name);
 
       default:
         throw UnimplementedError('${node.runtimeType} is not implemented');

@@ -3,7 +3,7 @@ import 'package:digia_expr/src/ast.dart';
 class ExprContext {
   ExprContext? enclosing;
 
-  Map<String, Object> variables;
+  Map<String, Object?> variables;
 
   ExprContext({required this.variables, this.enclosing});
 

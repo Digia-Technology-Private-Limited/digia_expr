@@ -109,8 +109,8 @@ class Parser {
                 }
                 token = tokens[_current];
               }
-              _consume(
-                  TokenType.rightParen, "Missing ) at the end of function");
+              // _consume(
+              //     TokenType.rightParen, "Missing ) at the end of function");
               expr = node;
             } else if (_peek()?.type == TokenType.dot) {
               _advance();
@@ -119,6 +119,7 @@ class Parser {
               break;
             }
           }
+          _advance();
           return expr;
 
         default:

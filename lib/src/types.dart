@@ -29,7 +29,7 @@ typedef Getter<T> = T Function();
 
 class ExprClass extends ExprCallable {
   final String _name;
-  final Map<String, Object> fields;
+  final Map<String, Object?> fields;
   final Map<String, ExprCallable> methods;
 
   ExprClass({

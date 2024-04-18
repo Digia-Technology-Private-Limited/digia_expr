@@ -66,7 +66,7 @@ void main() {
 
     test('6. Access field from a nested Object', () {
       const testValue = 10;
-      final code = r"${a.b.c.d()}";
+      final code = r"${sum(a.b.c.d(), a.e)}";
 
       final result = Expression.eval(
           code,
@@ -80,10 +80,11 @@ void main() {
                         name: 'Test',
                         fields: {},
                         methods: {'d': _TestMethod(f: (_, __) => testValue)}))
-              }, methods: {}))
+              }, methods: {})),
+              'e': testValue
             }, methods: {}))
           }));
-      expect(result, testValue);
+      expect(result, testValue + testValue);
     });
   });
 }

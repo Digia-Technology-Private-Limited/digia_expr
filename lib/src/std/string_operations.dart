@@ -1,8 +1,6 @@
 import 'package:digia_expr/digia_expr.dart';
 import 'package:digia_expr/src/ast_evaluator.dart';
 
-import '../types.dart';
-
 abstract class StringOperations {
   static Map<String, ExprCallable> functions = {
     'concat': ConcatOp(),

@@ -10,11 +10,7 @@ class ASTEvaluator {
 
   ASTEvaluator({ExprContext? context}) {
     final enclosing = ExprContext(variables: {...StdLibFunctions.functions});
-    if (context == null) {
-      _context = enclosing;
-    } else {
-      _context = context..enclosing = enclosing;
-    }
+    _context = enclosing..enclosing = context;
   }
 
   Object? eval(ASTNode node) {
@@ -47,7 +43,7 @@ class ASTEvaluator {
       case ASTVariable():
         final valueFromContext = _context?.get(node.name.lexeme);
         if (valueFromContext == null) {
-          throw 'Value for variable: ${node.name} is not found';
+          throw 'Value for variable: ${node.name.lexeme} is not found';
         }
 
         result = (valueFromContext is ASTNode)

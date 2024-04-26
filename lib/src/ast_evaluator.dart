@@ -1,7 +1,7 @@
-import 'package:digia_expr/src/ast.dart';
-import 'package:digia_expr/src/expr_context.dart';
-import 'package:digia_expr/src/std/std_functions.dart';
-import 'package:digia_expr/src/std/string_operations.dart';
+import 'ast.dart';
+import 'expr_context.dart';
+import 'std/std_functions.dart';
+import 'std/string_operations.dart';
 
 import 'types.dart';
 

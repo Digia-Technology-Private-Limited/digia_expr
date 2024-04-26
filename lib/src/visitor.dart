@@ -1,4 +1,4 @@
-import 'package:digia_expr/src/ast.dart';
+import 'ast.dart';
 
 import 'expr_context.dart';
 import 'std/std_functions.dart';

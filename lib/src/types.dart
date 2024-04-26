@@ -1,5 +1,5 @@
-import 'package:digia_expr/src/ast_evaluator.dart';
-import 'package:digia_expr/src/token.dart';
+import 'ast_evaluator.dart';
+import 'token.dart';
 
 abstract class ExprCallable {
   String get name;

@@ -1,6 +1,6 @@
-import 'package:digia_expr/src/ast.dart';
-import 'package:digia_expr/src/constants.dart';
-import 'package:digia_expr/src/create_ast.dart';
+import 'ast.dart';
+import 'constants.dart';
+import 'create_ast.dart';
 
 import 'token.dart';
 
@@ -105,7 +105,7 @@ class Parser {
                 token = tokens[_current];
                 if (token.type != TokenType.rightParen) {
                   _consume(
-                      TokenType.comma, "Expected , after a function argument");
+                      TokenType.comma, 'Expected , after a function argument');
                 }
                 token = tokens[_current];
               }
@@ -123,7 +123,7 @@ class Parser {
           return expr;
 
         default:
-          throw "Unexpected token: ${token.type}";
+          throw 'Unexpected token: ${token.type}';
       }
     }
 

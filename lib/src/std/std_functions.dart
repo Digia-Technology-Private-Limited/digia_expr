@@ -1,14 +1,15 @@
-import 'package:digia_expr/src/ast_evaluator.dart';
-import 'package:digia_expr/src/std/math_operations.dart';
-import 'package:digia_expr/src/std/string_operations.dart';
-import 'package:digia_expr/src/std/util.dart';
-
+import '../ast_evaluator.dart';
 import '../types.dart';
+import 'json_operations.dart';
+import 'math_operations.dart';
+import 'string_operations.dart';
+import 'util.dart';
 
 abstract class StdLibFunctions {
   static Map<String, ExprCallable> functions = {
     ...MathOperations.functions,
     ...StringOperations.functions,
+    ...JsonOperations.functions,
     'condition': _ConditionalOp()
   };
 }

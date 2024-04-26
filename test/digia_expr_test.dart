@@ -1,6 +1,5 @@
 import 'package:digia_expr/digia_expr.dart';
 import 'package:digia_expr/src/ast_evaluator.dart';
-import 'package:digia_expr/src/types.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -10,7 +9,7 @@ void main() {
     });
 
     test('1. Math functions: sum & mul.', () {
-      final code = "sum(mul(x,4),y)";
+      final code = 'sum(mul(x,4),y)';
 
       final context = ExprContext(variables: {'x': 10, 'y': 2});
 
@@ -26,7 +25,7 @@ void main() {
     });
 
     test('3. Variable Substitution & String Interpolation', () {
-      final code = "Hello \${aVar}!";
+      final code = 'Hello \${aVar}!';
 
       final result =
           Expression.eval(code, ExprContext(variables: {'aVar': 'World'}));
@@ -34,7 +33,7 @@ void main() {
     });
 
     test('4. Access field from an Object', () {
-      final code = "Hello \${person.name}!";
+      final code = 'Hello \${person.name}!';
 
       final result = Expression.eval(
           code,
@@ -66,7 +65,7 @@ void main() {
 
     test('6. Access field from a nested Object', () {
       const testValue = 10;
-      final code = r"${sum(a.b.c.d(), a.e)}";
+      final code = r'${sum(a.b.c.d(), a.e)}';
 
       final result = Expression.eval(
           code,

@@ -1,5 +1,5 @@
-import 'package:digia_expr/digia_expr.dart';
-import 'package:digia_expr/src/ast_evaluator.dart';
+import '../../digia_expr.dart';
+import '../ast_evaluator.dart';
 
 abstract class StringOperations {
   static Map<String, ExprCallable> functions = {

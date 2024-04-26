@@ -114,7 +114,7 @@ class Scanner {
       rightQuotePos = _currIdx;
 
       if (_isAtEnd()) {
-        throw "Unterminated String";
+        throw 'Unterminated String';
       }
     }
     // Skip the Closing Quote
@@ -135,7 +135,7 @@ class Scanner {
           numTokenType = TokenType.float;
           _advance(by: 2);
         } else {
-          throw "Invalid Number format";
+          throw 'Invalid Number format';
         }
       }
       char = _next();

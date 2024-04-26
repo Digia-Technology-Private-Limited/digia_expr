@@ -1,4 +1,4 @@
-import 'package:digia_expr/src/ast.dart';
+import 'ast.dart';
 
 class ExprContext {
   ExprContext? enclosing;

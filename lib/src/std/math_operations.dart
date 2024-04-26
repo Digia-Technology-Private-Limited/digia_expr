@@ -1,7 +1,6 @@
-import 'package:digia_expr/src/ast_evaluator.dart';
-import 'package:digia_expr/src/std/util.dart';
-
+import '../ast_evaluator.dart';
 import '../types.dart';
+import 'util.dart';
 
 abstract class MathOperations {
   static Map<String, ExprCallable> functions = {

@@ -18,7 +18,12 @@ include: package:lints/recommended.yaml
 # linter:
 #   rules:
 #     - camel_case_types
-
+linter:
+  rules:
+    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+    prefer_single_quotes: true # Uncomment to enable the `prefer_single_quotes` rule
+    prefer_relative_imports: true
+    directives_ordering: true
 # analyzer:
 #   exclude:
 #     - path/to/excluded/files/**

@@ -26,6 +26,6 @@ class Token {
 
   @override
   String toString() {
-    return "{ type: $type, lexeme: $lexeme, line: $line }";
+    return '{ type: $type, lexeme: $lexeme, line: $line }';
   }
 }

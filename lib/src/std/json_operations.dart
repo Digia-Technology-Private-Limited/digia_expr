@@ -1,3 +1,5 @@
+import 'package:json_path/json_path.dart';
+
 import '../../digia_expr.dart';
 import '../ast_evaluator.dart';
 import 'util.dart';
@@ -24,7 +26,10 @@ class JsonGetOp implements ExprCallable {
     final json = toValue(evaluator, arguments[0]);
     final path = toValue<String>(evaluator, arguments[1]);
 
-    return json?[path];
+    final jsonPath = JsonPath('\$.$path');
+    final result = jsonPath.readValues(json);
+    return result;
+    // return json?[path];
   }
 
   @override

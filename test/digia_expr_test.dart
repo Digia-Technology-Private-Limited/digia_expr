@@ -85,6 +85,19 @@ void main() {
           }));
       expect(result, testValue + testValue);
     });
+
+    test('6. Access JsonObject using Dot Notation', () {
+      final code = r'${sum(jsonObject.a.b, jsonObject.a.c)}';
+
+      final result = Expression.eval(
+          code,
+          ExprContext(variables: {
+            'jsonObject': {
+              'a': {'b': 10, 'c': 2},
+            }
+          }));
+      expect(result, 12);
+    });
   });
 }
 

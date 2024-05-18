@@ -1,5 +1,6 @@
 import 'ast.dart';
 import 'expr_context.dart';
+import 'std/json_operations.dart';
 import 'std/std_functions.dart';
 import 'std/string_operations.dart';
 
@@ -52,6 +53,11 @@ class ASTEvaluator {
 
       case ASTGetExpr():
         final object = eval(node.expr);
+        if (object is Map<String, dynamic>) {
+          result = JsonGetOp().call(this, [object, node.name.lexeme]);
+          break;
+        }
+
         if (object is! ExprClassInstance) {
           throw 'Only class instances have properties';
         }

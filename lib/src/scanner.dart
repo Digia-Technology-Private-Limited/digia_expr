@@ -91,6 +91,8 @@ class Scanner {
         _scanIdentifier();
         continue;
       }
+
+      throw UnsupportedError('Unknown token $char');
     }
 
     _addToken(TokenType.eof, '');

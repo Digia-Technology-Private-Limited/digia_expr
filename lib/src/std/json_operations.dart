@@ -28,8 +28,7 @@ class JsonGetOp implements ExprCallable {
 
     final jsonPath = JsonPath('\$.$path');
     final result = jsonPath.readValues(json);
-    return result;
-    // return json?[path];
+    return result.first;
   }
 
   @override

@@ -98,6 +98,22 @@ void main() {
           }));
       expect(result, 12);
     });
+
+    test('6. Test jsonGet', () {
+      final testValue = 'https://i.imgur.com/tFUQrOe.png';
+      final code = r"${jsonGet(dataSource, 'data.liveLearning.img')}";
+
+      final result = Expression.eval(
+          code,
+          ExprContext(variables: {
+            'dataSource': {
+              'data': {
+                'liveLearning': {'img': testValue}
+              },
+            }
+          }));
+      expect(result, testValue);
+    });
   });
 }
 

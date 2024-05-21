@@ -39,5 +39,5 @@ String _wrapWithQuotes(String string) {
   if (string.startsWith('\'') && string.endsWith('\'')) {
     return string;
   }
-  return "'$string'";
+  return '"$string"';
 }

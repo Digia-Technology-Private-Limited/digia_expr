@@ -114,6 +114,22 @@ void main() {
           }));
       expect(result, testValue);
     });
+
+    test('7. Test isEqual', () {
+      final testValue = true;
+      final code = r"${isEqual(10, 10)}";
+
+      final result = Expression.eval(code, null);
+      expect(result, testValue);
+    });
+
+    test('8. Test isNotEqual', () {
+      final testValue = true;
+      final code = r"${isNotEqual(10, 15)}";
+
+      final result = Expression.eval(code, null);
+      expect(result, testValue);
+    });
   });
 }
 

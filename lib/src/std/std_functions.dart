@@ -10,7 +10,9 @@ abstract class StdLibFunctions {
     ...MathOperations.functions,
     ...StringOperations.functions,
     ...JsonOperations.functions,
-    'condition': _ConditionalOp()
+    'condition': _ConditionalOp(),
+    'isEqual': _IsEqualOp(),
+    'isNotEqual': _IsNotEqualOp(),
   };
 }
 
@@ -41,4 +43,48 @@ class _ConditionalOp implements ExprCallable {
 
   @override
   String get name => 'conditional';
+}
+
+class _IsEqualOp implements ExprCallable {
+  @override
+  int arity() {
+    return 2;
+  }
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length < arity()) {
+      return 'Incorrect argument size';
+    }
+
+    final arg1 = toValue<Object>(evaluator, arguments[0]);
+    final arg2 = toValue<Object>(evaluator, arguments[1]);
+
+    return arg1 == arg2;
+  }
+
+  @override
+  String get name => 'isEqual';
+}
+
+class _IsNotEqualOp implements ExprCallable {
+  @override
+  int arity() {
+    return 2;
+  }
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length < arity()) {
+      return 'Incorrect argument size';
+    }
+
+    final arg1 = toValue<Object>(evaluator, arguments[0]);
+    final arg2 = toValue<Object>(evaluator, arguments[1]);
+
+    return arg1 != arg2;
+  }
+
+  @override
+  String get name => 'isNotEqual';
 }

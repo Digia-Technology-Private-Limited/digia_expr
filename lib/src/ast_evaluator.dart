@@ -42,14 +42,20 @@ class ASTEvaluator {
         result = callee.call(this, node.expressions);
 
       case ASTVariable():
-        final valueFromContext = _context?.get(node.name.lexeme);
-        if (valueFromContext == null) {
-          throw 'Value for variable: ${node.name.lexeme} is not found';
+        if (_context == null) {
+          throw 'No Environment Context provided';
+        }
+        final (variableFound, valueOfVariable) =
+            _context!.get(node.name.lexeme);
+        if (!variableFound) {
+          throw '${node.name.lexeme} is not defined';
         }
 
-        result = (valueFromContext is ASTNode)
-            ? eval(valueFromContext)
-            : valueFromContext;
+        if (valueOfVariable == null) return null;
+
+        result = (valueOfVariable is ASTNode)
+            ? eval(valueOfVariable)
+            : valueOfVariable;
 
       case ASTGetExpr():
         final object = eval(node.expr);

@@ -7,12 +7,12 @@ class ExprContext {
 
   ExprContext({required this.variables, this.enclosing});
 
-  Object? get(String key) {
+  (bool, Object?) get(String key) {
     if (variables.containsKey(key)) {
-      return variables[key];
+      return (true, variables[key]);
     }
 
-    return enclosing?.get(key);
+    return enclosing?.get(key) ?? (false, null);
   }
 
   put(String key, ASTNode value) {

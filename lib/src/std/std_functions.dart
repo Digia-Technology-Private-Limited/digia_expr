@@ -1,5 +1,6 @@
 import '../ast_evaluator.dart';
 import '../types.dart';
+import 'date_time_operations.dart';
 import 'json_operations.dart';
 import 'math_operations.dart';
 import 'string_operations.dart';
@@ -10,6 +11,7 @@ abstract class StdLibFunctions {
     ...MathOperations.functions,
     ...StringOperations.functions,
     ...JsonOperations.functions,
+    ...DateTimeOperations.functions,
     'condition': _ConditionalOp(),
     'isEqual': _IsEqualOp(),
     'isNotEqual': _IsNotEqualOp(),

@@ -130,6 +130,36 @@ void main() {
       final result = Expression.eval(code, null);
       expect(result, testValue);
     });
+
+    test('8. Test isoFormat', () {
+      final testValue = '2024-01-29T00:00:00Z';
+      final output = '29th January';
+
+      final result = Expression.eval(r"${isoFormat(isoDate, 'Do MMMM')}",
+          ExprContext(variables: {'isoDate': testValue}));
+      expect(result, output);
+    });
+
+    test('9. Test isoFormat leap year', () {
+      final testValue = '2024-02-29T00:00:00Z';
+      final output = '31st Jan';
+
+      final result = Expression.eval(r"${isoFormat(isoDate, 'Do MMM')}",
+          ExprContext(variables: {'isoDate': testValue}));
+      expect(result, output);
+    });
+
+    group('Test NumberFormat', () {
+      test('1. Test numberFormat', () {
+        expect(Expression.eval(r'${numberFormat(456786)}', null), '4,56,786');
+      });
+
+      test('2. Test custom numberFormat', () {
+        expect(
+            Expression.eval(r"${numberFormat(123456789, '#,###,000')}", null),
+            '123,456,789');
+      });
+    });
   });
 }
 

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../ast_evaluator.dart';
 import '../types.dart';
 import 'date_time_operations.dart';
@@ -15,6 +17,7 @@ abstract class StdLibFunctions {
     'condition': _ConditionalOp(),
     'isEqual': _IsEqualOp(),
     'isNotEqual': _IsNotEqualOp(),
+    'numberFormat': _NumberFormatOp()
   };
 }
 
@@ -89,4 +92,25 @@ class _IsNotEqualOp implements ExprCallable {
 
   @override
   String get name => 'isNotEqual';
+}
+
+class _NumberFormatOp implements ExprCallable {
+  @override
+  int arity() => 2;
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length > arity()) {
+      return 'Incorrect argument size';
+    }
+
+    final number = toValue<num>(evaluator, arguments[0]);
+    final arg1 = arguments.length > 1 ? arguments[1] : null;
+    final format = arg1 != null ? toValue<String>(evaluator, arg1) : '#,##,000';
+
+    return NumberFormat(format).format(number);
+  }
+
+  @override
+  String get name => 'numberFormat';
 }

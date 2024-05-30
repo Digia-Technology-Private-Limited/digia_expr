@@ -1,3 +1,7 @@
+## [0.0.5] - 2023-05-31
+
+- Added support for toInt
+
 ## [0.0.4] - 2023-05-31
 
 - Bug Fix.

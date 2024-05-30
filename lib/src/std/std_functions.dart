@@ -17,6 +17,8 @@ abstract class StdLibFunctions {
     'condition': _ConditionalOp(),
     'isEqual': _IsEqualOp(),
     'isNotEqual': _IsNotEqualOp(),
+    'isNull': _IsNullOp(),
+    'isNotNull': _IsNotNullOp(),
     'numberFormat': _NumberFormatOp()
   };
 }
@@ -113,4 +115,38 @@ class _NumberFormatOp implements ExprCallable {
 
   @override
   String get name => 'numberFormat';
+}
+
+class _IsNullOp implements ExprCallable {
+  @override
+  int arity() => 1;
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length > arity()) {
+      return 'Incorrect argument size';
+    }
+
+    return arguments.firstOrNull == null;
+  }
+
+  @override
+  String get name => 'isNull';
+}
+
+class _IsNotNullOp implements ExprCallable {
+  @override
+  int arity() => 1;
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length > arity()) {
+      return 'Incorrect argument size';
+    }
+
+    return arguments.firstOrNull != null;
+  }
+
+  @override
+  String get name => 'isNotNull';
 }

@@ -1,3 +1,7 @@
+## [0.0.4] - 2023-05-31
+
+- Bug Fix.
+
 ## [0.0.3] - 2023-05-30
 
 - Added support for numberFormat & isoFormat.

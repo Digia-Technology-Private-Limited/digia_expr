@@ -24,14 +24,39 @@ void main() {
       expect(result, 'abcxyz');
     });
 
-    test('3. Variable Substitution & String Interpolation', () {
-      final code = 'Hello \${aVar}!';
+    group('3. Test String Interpolation', () {
+      test('1. Single String Interpolation', () {
+        final code = r'Hello ${aVar}!';
 
-      final result =
-          Expression.eval(code, ExprContext(variables: {'aVar': 'World'}));
-      expect(result, 'Hello World!');
+        final result =
+            Expression.eval(code, ExprContext(variables: {'aVar': 'World'}));
+        expect(result, 'Hello World!');
+      });
+
+      test('2. Multiple String Interpolation Case 1', () {
+        final code = r'Hello ${a} & ${b}!';
+
+        final result = Expression.eval(
+            code, ExprContext(variables: {'a': 'Alpha', 'b': 'Beta'}));
+        expect(result, 'Hello Alpha & Beta!');
+      });
+
+      test('3. Multiple String Interpolation Case 2', () {
+        final code = r'${a}';
+
+        final result = Expression.eval(
+            code, ExprContext(variables: {'a': 'Alpha', 'b': 'Beta'}));
+        expect(result, 'Alpha');
+      });
+
+      test('4. Multiple String Interpolation Case 3', () {
+        final code = r'${a}, ${b}';
+
+        final result = Expression.eval(
+            code, ExprContext(variables: {'a': 'Alpha', 'b': 'Beta'}));
+        expect(result, 'Alpha, Beta');
+      });
     });
-
     test('4. Access field from an Object', () {
       final code = 'Hello \${person.name}!';
 

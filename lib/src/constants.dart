@@ -1,1 +1,1 @@
-const stringExpressionRegex = r'\$\{\s{0,}(.+)\s{0,}\}';
+const expressionSyntaxRegex = r'\$\{\s{0,}(.+?)\s{0,}\}';

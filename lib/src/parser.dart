@@ -27,7 +27,7 @@ class Parser {
   }
 
   List<ASTNode> _createStringExpression(String input) {
-    final RegExp exp = RegExp(stringExpressionRegex);
+    final RegExp exp = RegExp(expressionSyntaxRegex);
     List<ASTNode> parts = [];
     int lastIndex = 0;
 
@@ -63,7 +63,7 @@ class Parser {
           return ASTBooleanLiteral(token: token);
 
         case TokenType.string:
-          if (RegExp(stringExpressionRegex).hasMatch(token.lexeme)) {
+          if (RegExp(expressionSyntaxRegex).hasMatch(token.lexeme)) {
             final parts = _createStringExpression(token.lexeme);
             _advance();
             return ASTStringExpression(parts: parts);

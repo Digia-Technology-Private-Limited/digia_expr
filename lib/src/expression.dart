@@ -1,4 +1,5 @@
 import 'ast_evaluator.dart';
+import 'constants.dart';
 import 'create_ast.dart';
 import 'expr_context.dart';
 
@@ -23,15 +24,15 @@ class Expression {
     return ASTEvaluator(context: context).eval(root);
   }
 
-  static const stringExpressionRegex = r'\$\{\s{0,}(.+)\s{0,}\}';
-
   static bool hasExpression(String s) {
-    return RegExp(stringExpressionRegex).hasMatch(s.trim());
+    return RegExp(expressionSyntaxRegex).hasMatch(s.trim());
   }
 
   static bool isExpression(String s) {
-    final trimmed = s.trim();
-    return (trimmed.startsWith(r'${') && trimmed.endsWith(r'}'));
+    final string = s.trim();
+    return string.startsWith(r'${') &&
+        string.endsWith('}') &&
+        RegExp(expressionSyntaxRegex).allMatches(s).length == 1;
   }
 }
 

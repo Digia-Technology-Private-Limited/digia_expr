@@ -19,7 +19,8 @@ abstract class StdLibFunctions {
     'isNotEqual': _IsNotEqualOp(),
     'isNull': _IsNullOp(),
     'isNotNull': _IsNotNullOp(),
-    'numberFormat': _NumberFormatOp()
+    'numberFormat': _NumberFormatOp(),
+    'toInt': _ToIntOp()
   };
 }
 
@@ -149,4 +150,35 @@ class _IsNotNullOp implements ExprCallable {
 
   @override
   String get name => 'isNotNull';
+}
+
+class _ToIntOp implements ExprCallable {
+  @override
+  int arity() => 1;
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arity() != arguments.length) {
+      return 'Incorrect argument size';
+    }
+
+    final value = toValue(evaluator, arguments[0]);
+
+    if (value is String) {
+      if (value.startsWith('0x') == true) {
+        return int.tryParse(value.substring(2), radix: 16)?.toInt();
+      }
+
+      return double.tryParse(value)?.toInt();
+    }
+
+    if (value is num) {
+      return value.toInt();
+    }
+
+    return null;
+  }
+
+  @override
+  String get name => 'toInt';
 }

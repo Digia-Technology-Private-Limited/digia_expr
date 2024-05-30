@@ -57,6 +57,10 @@ class Parser {
           _advance();
           return ASTNumberLiteral(value: int.tryParse(token.lexeme));
 
+        case TokenType.float:
+          _advance();
+          return ASTNumberLiteral(value: double.tryParse(token.lexeme));
+
         case TokenType.yes:
         case TokenType.no:
           _advance();

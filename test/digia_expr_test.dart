@@ -185,6 +185,24 @@ void main() {
             '123,456,789');
       });
     });
+
+    group('Test toInt Function', () {
+      test('1. Integer to Int', () {
+        expect(Expression.eval(r'${toInt(100)}', null), 100);
+      });
+
+      test('2. Float to Int', () {
+        expect(Expression.eval(r'${toInt(100.1)}', null), 100);
+      });
+
+      test('3. String to Int', () {
+        expect(Expression.eval(r"${toInt('100.1')}", null), 100);
+      });
+
+      test('4. Hex to Int', () {
+        expect(Expression.eval(r"${toInt('0x64')}", null), 100);
+      });
+    });
   });
 }
 

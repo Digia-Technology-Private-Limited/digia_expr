@@ -87,7 +87,7 @@ class Scanner {
         continue;
       }
 
-      if (RegExp(r'[a-z]').hasMatch(char)) {
+      if (RegExp(r'[a-zA-Z]').hasMatch(char)) {
         _scanIdentifier();
         continue;
       }

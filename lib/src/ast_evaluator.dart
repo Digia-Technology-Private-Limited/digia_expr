@@ -59,6 +59,9 @@ class ASTEvaluator {
 
       case ASTGetExpr():
         final object = eval(node.expr);
+
+        if (object == null) return null;
+
         if (object is Map<String, dynamic>) {
           result = JsonGetOp().call(this, [object, node.name.lexeme]);
           break;

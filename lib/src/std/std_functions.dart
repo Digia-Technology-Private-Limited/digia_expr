@@ -109,7 +109,8 @@ class _NumberFormatOp implements ExprCallable {
 
     final number = toValue<num>(evaluator, arguments[0]);
     final arg1 = arguments.length > 1 ? arguments[1] : null;
-    final format = arg1 != null ? toValue<String>(evaluator, arg1) : '#,##,000';
+    final format =
+        arg1 != null ? toValue<String>(evaluator, arg1) : '##,##,###';
 
     return NumberFormat(format).format(number);
   }
@@ -128,7 +129,8 @@ class _IsNullOp implements ExprCallable {
       return 'Incorrect argument size';
     }
 
-    return arguments.firstOrNull == null;
+    return arguments.firstOrNull == null ||
+        toValue(evaluator, arguments.firstOrNull!) == null;
   }
 
   @override
@@ -145,7 +147,8 @@ class _IsNotNullOp implements ExprCallable {
       return 'Incorrect argument size';
     }
 
-    return arguments.firstOrNull != null;
+    return arguments.firstOrNull != null &&
+        toValue(evaluator, arguments.firstOrNull!) != null;
   }
 
   @override

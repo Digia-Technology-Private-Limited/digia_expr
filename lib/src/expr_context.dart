@@ -7,6 +7,15 @@ class ExprContext {
 
   ExprContext({required this.variables, this.enclosing});
 
+  setEnclosing(ExprContext? enclosing) {
+    if (this.enclosing == null) {
+      this.enclosing = enclosing;
+      return;
+    }
+
+    enclosing?.setEnclosing(enclosing);
+  }
+
   (bool, Object?) get(String key) {
     if (variables.containsKey(key)) {
       return (true, variables[key]);

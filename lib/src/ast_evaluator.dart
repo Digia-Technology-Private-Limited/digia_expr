@@ -7,11 +7,16 @@ import 'std/string_operations.dart';
 import 'types.dart';
 
 class ASTEvaluator {
-  ExprContext? _context;
+  late ExprContext _context;
 
   ASTEvaluator({ExprContext? context}) {
-    final enclosing = ExprContext(variables: {...StdLibFunctions.functions});
-    _context = enclosing..enclosing = context;
+    final std = ExprContext(variables: StdLibFunctions.functions);
+    if (context != null) {
+      context.appendEnclosing(std);
+      _context = context;
+      return;
+    }
+    _context = std;
   }
 
   Object? eval(ASTNode node) {
@@ -42,11 +47,7 @@ class ASTEvaluator {
         result = callee.call(this, node.expressions);
 
       case ASTVariable():
-        if (_context == null) {
-          throw 'No Environment Context provided';
-        }
-        final (variableFound, valueOfVariable) =
-            _context!.get(node.name.lexeme);
+        final (variableFound, valueOfVariable) = _context.get(node.name.lexeme);
         if (!variableFound) {
           throw '${node.name.lexeme} is not defined';
         }

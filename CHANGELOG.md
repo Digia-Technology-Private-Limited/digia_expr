@@ -1,3 +1,7 @@
+## [0.0.7] - 2023-06-04
+
+- Bug Fix (Env scope chain)
+
 ## [0.0.6] - 2023-06-04
 
 - Added support for toInt

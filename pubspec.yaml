@@ -1,6 +1,6 @@
 name: digia_expr
 description: This library contains expressions that are used in digia_ui
-version: 0.0.7
+version: 0.0.8
 # repository: https://github.com/my_org/my_repo
 
 environment:

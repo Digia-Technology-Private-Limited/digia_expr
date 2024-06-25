@@ -1,3 +1,7 @@
+## [0.0.8] - 2023-06-25
+
+- String Length
+
 ## [0.0.7] - 2023-06-04
 
 - Bug Fix (Env scope chain)

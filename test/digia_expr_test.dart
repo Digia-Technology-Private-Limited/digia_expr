@@ -8,7 +8,7 @@ void main() {
       // Additional setup goes here.
     });
 
-    test('1. Math functions: sum & mul.', () {
+    test('Math functions: sum & mul.', () {
       final code = 'sum(mul(x,4),y)';
 
       final context = ExprContext(variables: {'x': 10, 'y': 2});
@@ -17,15 +17,15 @@ void main() {
       expect(result, 42);
     });
 
-    test('2. String concatenation: abc + xyz = abcxyz', () {
+    test('String concatenation: abc + xyz = abcxyz', () {
       final code = "concat('abc', 'xyz')";
 
       final result = Expression.eval(code, null);
       expect(result, 'abcxyz');
     });
 
-    group('3. Test String Interpolation', () {
-      test('1. Single String Interpolation', () {
+    group('Test String Interpolation', () {
+      test('Single String Interpolation', () {
         final code = r'Hello ${aVar}!';
 
         final result =
@@ -33,7 +33,7 @@ void main() {
         expect(result, 'Hello World!');
       });
 
-      test('2. Multiple String Interpolation Case 1', () {
+      test('Multiple String Interpolation Case 1', () {
         final code = r'Hello ${a} & ${b}!';
 
         final result = Expression.eval(
@@ -41,7 +41,7 @@ void main() {
         expect(result, 'Hello Alpha & Beta!');
       });
 
-      test('3. Multiple String Interpolation Case 2', () {
+      test('Multiple String Interpolation Case 2', () {
         final code = r'${a}';
 
         final result = Expression.eval(
@@ -49,7 +49,7 @@ void main() {
         expect(result, 'Alpha');
       });
 
-      test('4. Multiple String Interpolation Case 3', () {
+      test('Multiple String Interpolation Case 3', () {
         final code = r'${a}, ${b}';
 
         final result = Expression.eval(
@@ -57,7 +57,7 @@ void main() {
         expect(result, 'Alpha, Beta');
       });
     });
-    test('4. Access field from an Object', () {
+    test('Access field from an Object', () {
       final code = 'Hello \${person.name}!';
 
       final result = Expression.eval(
@@ -70,7 +70,7 @@ void main() {
       expect(result, 'Hello Tushar!');
     });
 
-    test('5. Execute method of an Object', () {
+    test('Execute method of an Object', () {
       const testValue = 10;
       final data = {'count': testValue};
 
@@ -88,7 +88,7 @@ void main() {
       expect(result, testValue);
     });
 
-    test('6. Access field from a nested Object', () {
+    test('Access field from a nested Object', () {
       const testValue = 10;
       final code = r'${sum(a.b.c.d(), a.e)}';
 
@@ -111,7 +111,7 @@ void main() {
       expect(result, testValue + testValue);
     });
 
-    test('6. Access JsonObject using Dot Notation', () {
+    test('Access JsonObject using Dot Notation', () {
       final code = r'${sum(jsonObject.a.b, jsonObject.a.c)}';
 
       final result = Expression.eval(
@@ -124,7 +124,7 @@ void main() {
       expect(result, 12);
     });
 
-    test('6. Test jsonGet', () {
+    test('Test jsonGet', () {
       final testValue = 'https://i.imgur.com/tFUQrOe.png';
       final code = r"${jsonGet(dataSource, 'data.liveLearning.img')}";
 
@@ -140,68 +140,89 @@ void main() {
       expect(result, testValue);
     });
 
-    test('7. Test isEqual', () {
+    test('Test isEqual', () {
       final testValue = true;
-      final code = r"${isEqual(10, 10)}";
+      final code = r'${isEqual(10, 10)}';
 
       final result = Expression.eval(code, null);
       expect(result, testValue);
     });
 
-    test('8. Test isNotEqual', () {
+    test('Test isNotEqual', () {
       final testValue = true;
-      final code = r"${isNotEqual(10, 15)}";
+      final code = r'${isNotEqual(10, 15)}';
 
       final result = Expression.eval(code, null);
       expect(result, testValue);
     });
 
-    test('8. Test isoFormat', () {
-      final testValue = '2024-01-29T00:00:00Z';
-      final output = '29th January';
+    test('Test isoFormat', () {
+      final testValue = '2024-06-03T23:42:36Z';
+      final output = '3rd June';
 
       final result = Expression.eval(r"${isoFormat(isoDate, 'Do MMMM')}",
           ExprContext(variables: {'isoDate': testValue}));
       expect(result, output);
     });
 
-    test('9. Test isoFormat leap year', () {
+    test('Test isoFormat leap year', () {
       final testValue = '2024-02-29T00:00:00Z';
-      final output = '31st Jan';
+      final output = '29th February';
 
-      final result = Expression.eval(r"${isoFormat(isoDate, 'Do MMM')}",
+      final result = Expression.eval(r"${isoFormat(isoDate, 'Do MMMM')}",
           ExprContext(variables: {'isoDate': testValue}));
       expect(result, output);
     });
 
     group('Test NumberFormat', () {
-      test('1. Test numberFormat', () {
+      test('Test numberFormat', () {
         expect(Expression.eval(r'${numberFormat(456786)}', null), '4,56,786');
       });
 
-      test('2. Test custom numberFormat', () {
+      test('Test custom numberFormat', () {
         expect(
             Expression.eval(r"${numberFormat(123456789, '#,###,000')}", null),
             '123,456,789');
       });
+
+      test('Test custom numberFormat', () {
+        expect(Expression.eval(r"${numberFormat(30000, '##,##,###')}", null),
+            '30,000');
+      });
     });
 
     group('Test toInt Function', () {
-      test('1. Integer to Int', () {
+      test('Integer to Int', () {
         expect(Expression.eval(r'${toInt(100)}', null), 100);
       });
 
-      test('2. Float to Int', () {
+      test('Float to Int', () {
         expect(Expression.eval(r'${toInt(100.1)}', null), 100);
       });
 
-      test('3. String to Int', () {
+      test('String to Int', () {
         expect(Expression.eval(r"${toInt('100.1')}", null), 100);
       });
 
-      test('4. Hex to Int', () {
+      test('Hex to Int', () {
         expect(Expression.eval(r"${toInt('0x64')}", null), 100);
       });
+    });
+
+    test('Hex to Int', () {
+      final code =
+          r"${condition(isEqual(a, b), 'Note: NPCI may flag repeat transactions of the same amount as duplicates and might reject them. As a precaution, we will deduct ₹${numberFormat(b)} from your account.', 'Note: You will receive confirmation emails on each steps')}";
+      expect(
+          Expression.eval(code, ExprContext(variables: {'a': 1001, 'b': 1001})),
+          'Note: NPCI may flag repeat transactions of the same amount as duplicates and might reject them. As a precaution, we will deduct ₹1,001 from your account.');
+    });
+
+    test('String Length', () {
+      final code = r'${isEqual(strLength(x), length)}';
+      expect(
+          Expression.eval(
+              code, ExprContext(variables: {'x': 'hello-world', 'length': 11})),
+          true);
     });
   });
 }

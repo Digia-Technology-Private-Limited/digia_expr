@@ -1,11 +1,30 @@
 import '../../digia_expr.dart';
 import '../ast_evaluator.dart';
+import 'util.dart';
 
 abstract class StringOperations {
   static Map<String, ExprCallable> functions = {
     'concat': ConcatOp(),
     'concatenate': ConcatOp(),
+    'strLength': LengthOp(),
   };
+}
+
+class LengthOp implements ExprCallable {
+  @override
+  int arity() => 1;
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length != arity()) {
+      throw 'Incorrect argument size';
+    }
+
+    return toValue<String>(evaluator, arguments.first)?.length;
+  }
+
+  @override
+  String get name => 'length';
 }
 
 class ConcatOp implements ExprCallable {
@@ -26,5 +45,5 @@ class ConcatOp implements ExprCallable {
   }
 
   @override
-  String get name => 'concatenate';
+  String get name => 'strLength';
 }

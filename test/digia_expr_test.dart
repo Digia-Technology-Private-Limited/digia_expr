@@ -224,6 +224,25 @@ void main() {
               code, ExprContext(variables: {'x': 'hello-world', 'length': 11})),
           true);
     });
+
+    test('QS Encode', () {
+      const payload = {
+        'key1': 11,
+        'key2': 'str',
+        'key3': false,
+        'key4': 0,
+        'key5': {'cKey1': true},
+        'key6': [0, 1],
+        'key7': [
+          {'cKey1': 233},
+          {'cKey2': false}
+        ]
+      };
+      expect(
+          Expression.eval(r'${qsEncode(payload)}',
+              ExprContext(variables: {'payload': payload})),
+          'key1=11&key2=str&key3=false&key4=0&key5[cKey1]=true&key6=0&key6=1&key7[cKey1]=233&key7[cKey2]=false');
+    });
   });
 }
 

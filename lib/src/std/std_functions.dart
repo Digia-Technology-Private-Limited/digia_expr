@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:qs_dart/qs_dart.dart';
 
 import '../ast_evaluator.dart';
 import '../types.dart';
@@ -20,7 +21,8 @@ abstract class StdLibFunctions {
     'isNull': _IsNullOp(),
     'isNotNull': _IsNotNullOp(),
     'numberFormat': _NumberFormatOp(),
-    'toInt': _ToIntOp()
+    'toInt': _ToIntOp(),
+    'qsEncode': _QsEncodeOp()
   };
 }
 
@@ -184,4 +186,26 @@ class _ToIntOp implements ExprCallable {
 
   @override
   String get name => 'toInt';
+}
+
+class _QsEncodeOp implements ExprCallable {
+  @override
+  int arity() => 1;
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arity() != arguments.length) {
+      return 'Incorrect argument size';
+    }
+
+    final value = toValue<Object>(evaluator, arguments[0]);
+
+    final output = QS.encode(
+        value, EncodeOptions(encode: false, listFormat: ListFormat.repeat));
+
+    return output;
+  }
+
+  @override
+  String get name => 'qsEncode';
 }

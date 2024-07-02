@@ -27,6 +27,7 @@ dependencies:
   json_path: ^0.7.1
   moment_dart: ^2.1.0
   intl: ^0.18.1
+  qs_dart: ^1.2.0
 
 dev_dependencies:
   lints: ^2.0.0

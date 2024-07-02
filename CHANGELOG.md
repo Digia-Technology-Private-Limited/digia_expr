@@ -1,3 +1,7 @@
+## [0.0.9] - 2023-06-25
+
+- Added support QS Encode
+
 ## [0.0.8] - 2023-06-25
 
 - String Length

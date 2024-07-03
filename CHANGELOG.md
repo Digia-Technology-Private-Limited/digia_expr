@@ -1,4 +1,8 @@
-## [0.0.9] - 2023-06-25
+## [0.0.10] - 2023-07-03
+
+- Added support for many logical operations
+
+## [0.0.9] - 2023-07-02
 
 - Added support QS Encode
 

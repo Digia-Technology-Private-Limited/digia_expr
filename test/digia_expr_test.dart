@@ -142,7 +142,7 @@ void main() {
 
     test('Test isEqual', () {
       final testValue = true;
-      final code = r'${isEqual(10, 10)}';
+      final code = r'${eq(10, 10)}';
 
       final result = Expression.eval(code, null);
       expect(result, testValue);
@@ -150,7 +150,7 @@ void main() {
 
     test('Test isNotEqual', () {
       final testValue = true;
-      final code = r'${isNotEqual(10, 15)}';
+      final code = r'${neq(10, 15)}';
 
       final result = Expression.eval(code, null);
       expect(result, testValue);
@@ -242,6 +242,104 @@ void main() {
           Expression.eval(r'${qsEncode(payload)}',
               ExprContext(variables: {'payload': payload})),
           'key1=11&key2=str&key3=false&key4=0&key5[cKey1]=true&key6=0&key6=1&key7[cKey1]=233&key7[cKey2]=false');
+    });
+
+    group('If conditions', () {
+      test('Normal if, Without else case, truthy condition', () {
+        expect(Expression.eval(r'${if(true, false)}', null), false);
+      });
+
+      test('Normal if, Without else case, falsy condition', () {
+        expect(Expression.eval(r'${if(false, false)}', null), null);
+      });
+
+      test('Normal if, With else case, truthy condition', () {
+        expect(Expression.eval(r'${if(true, false, true)}', null), false);
+      });
+
+      test('Normal if, With else case, falsy condition', () {
+        expect(Expression.eval(r'${if(false, false, true)}', null), true);
+      });
+
+      test('Multi if, Without else case, 1st condition - truthy evaluation',
+          () {
+        expect(Expression.eval(r"${if(true, 'a', true, 'b')}", null), 'a');
+      });
+
+      test('Multi if, Without else case, 1st condition - false evaluation', () {
+        expect(Expression.eval(r"${if(false, 'a', true, 'b')}", null), 'b');
+      });
+
+      test('Multi if, Without else case, all false evaluation', () {
+        expect(Expression.eval(r"${if(false, 'a', false, 'b')}", null), null);
+      });
+
+      test('Multi if, With else case, all false evaluation', () {
+        expect(
+            Expression.eval(r"${if(false, 'a', false, 'b', 'c')}", null), 'c');
+      });
+    });
+
+    group('Logical Ops', () {
+      test('greater than - false', () {
+        expect(Expression.eval(r'${gt(1, 2)}', null), false);
+      });
+      test('greater than - true', () {
+        expect(Expression.eval(r'${gt(2.1, 1.2)}', null), true);
+      });
+
+      test('greater than or equal - false', () {
+        expect(Expression.eval(r'${gte(1.2, 2.1)}', null), false);
+      });
+      test('greater than or equal - true', () {
+        expect(Expression.eval(r'${gte(2.1, 2.1)}', null), true);
+      });
+
+      test('less than - false', () {
+        expect(Expression.eval(r'${lt(1, 2)}', null), true);
+      });
+      test('less than - true', () {
+        expect(Expression.eval(r'${lt(2.1, 1.2)}', null), false);
+      });
+
+      test('less than or equal - false', () {
+        expect(Expression.eval(r'${lte(1.2, 2.1)}', null), true);
+      });
+      test('less than or equal - true', () {
+        expect(Expression.eval(r'${lte(2.1, 2.1)}', null), true);
+      });
+
+      test('not - true to false', () {
+        expect(Expression.eval(r'${not(true)}', null), false);
+      });
+
+      test('not - false to true', () {
+        expect(Expression.eval(r'${not(false)}', null), true);
+      });
+
+      test('Logical OR - false || true', () {
+        expect(Expression.eval(r'${or(false, true)}', null), true);
+      });
+
+      test('Logical OR - false || false', () {
+        expect(Expression.eval(r'${or(false, false)}', null), false);
+      });
+
+      test('fallback value - PASS: null ?? a', () {
+        expect(Expression.eval(r"${or(if(false, false), 'a')}", null), 'a');
+      });
+
+      test('fallback value - PASS: a ?? a', () {
+        expect(Expression.eval(r"${or('b', 'a')}", null), 'b');
+      });
+
+      test('Logical AND - false && true', () {
+        expect(Expression.eval(r'${and(false, true)}', null), false);
+      });
+
+      test('Logical AND - true && true', () {
+        expect(Expression.eval(r'${and(true, true)}', null), true);
+      });
     });
   });
 }

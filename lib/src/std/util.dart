@@ -1,7 +1,9 @@
 import '../../digia_expr.dart';
 import '../ast_evaluator.dart';
 
-T? toValue<T>(ASTEvaluator evaluator, Object obj) {
+T? toValue<T>(ASTEvaluator evaluator, Object? obj) {
+  if (obj == null) return null;
+
   if (obj is ASTNode) {
     final result = evaluator.eval(obj);
     return result as T?;

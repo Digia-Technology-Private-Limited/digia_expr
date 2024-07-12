@@ -1,3 +1,21 @@
+## [0.0.11] - 2023-07-12
+
+- Added support for common operations on an Iterable
+  - contains
+  - elementAt
+  - firstElement
+  - lastElement
+  - skip
+  - take
+  - reversed
+- Added support for some more match functions:
+  - modulo
+  - ceil
+  - floor
+  - abs
+- strLength is now length. length(...) works for String, List & Map
+- Added 'isEmpty' function. It mimicks js lodash's isEmpty function.
+
 ## [0.0.10] - 2023-07-03
 
 - Added support for many logical operations

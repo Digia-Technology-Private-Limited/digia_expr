@@ -9,8 +9,99 @@ abstract class MathOperations {
     'multiply': _MulOp(),
     'diff': _DiffOp(),
     'difference': _DiffOp(),
-    'divide': _DivideOp()
+    'divide': _DivideOp(),
+    'modulo': _ModuloOp(),
+    'ceil': _CeilOp(),
+    'floor': _FloorOp(),
+    'abs': _AbsOp(),
   };
+}
+
+class _ModuloOp implements ExprCallable {
+  @override
+  int arity() {
+    return 2;
+  }
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length != arity()) {
+      return ArgumentError('Can only resolve 2 arguments');
+    }
+
+    final operand1 = toValue<num>(evaluator, arguments[0]);
+    final operand2 = toValue<num>(evaluator, arguments[1]);
+
+    if (operand1 == null || operand2 == null) return null;
+
+    return operand1 % operand2;
+  }
+
+  @override
+  String get name => 'modulo';
+}
+
+class _AbsOp implements ExprCallable {
+  @override
+  int arity() {
+    return 1;
+  }
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length != arity()) {
+      return ArgumentError('Can only resolve 1 argument');
+    }
+
+    final arg1 = toValue<num>(evaluator, arguments.first);
+
+    return arg1?.abs();
+  }
+
+  @override
+  String get name => 'abs';
+}
+
+class _FloorOp implements ExprCallable {
+  @override
+  int arity() {
+    return 1;
+  }
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length != arity()) {
+      return ArgumentError('Can only resolve 1 argument');
+    }
+
+    final arg1 = toValue<num>(evaluator, arguments.first);
+
+    return arg1?.floor();
+  }
+
+  @override
+  String get name => 'floor';
+}
+
+class _CeilOp implements ExprCallable {
+  @override
+  int arity() {
+    return 1;
+  }
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length != arity()) {
+      return ArgumentError('Can only resolve 1 argument');
+    }
+
+    final arg1 = toValue<num>(evaluator, arguments.first);
+
+    return arg1?.ceil();
+  }
+
+  @override
+  String get name => 'ceil';
 }
 
 class _SumOp implements ExprCallable {

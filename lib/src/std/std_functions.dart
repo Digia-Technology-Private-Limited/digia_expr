@@ -4,6 +4,7 @@ import 'package:qs_dart/qs_dart.dart';
 import '../ast_evaluator.dart';
 import '../types.dart';
 import 'date_time_operations.dart';
+import 'iterable_operations.dart';
 import 'json_operations.dart';
 import 'logical_operations.dart';
 import 'math_operations.dart';
@@ -17,10 +18,70 @@ abstract class StdLibFunctions {
     ...StringOperations.functions,
     ...JsonOperations.functions,
     ...DateTimeOperations.functions,
+    ...IterableOperations.functions,
     'numberFormat': _NumberFormatOp(),
     'toInt': _ToIntOp(),
-    'qsEncode': _QsEncodeOp()
+    'qsEncode': _QsEncodeOp(),
+    'isEmpty': _IsEmptyOp(),
+    'length': _LengthOp(),
+    // For Backward Compatibility
+    'strLength': _LengthOp(),
   };
+}
+
+class _IsEmptyOp implements ExprCallable {
+  @override
+  int arity() => 1;
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length != arity()) {
+      throw 'Incorrect argument size';
+    }
+
+    final arg = toValue(evaluator, arguments.first);
+
+    if (arg is num) return arg == 0;
+
+    if (arg is bool) return arg;
+
+    if (arg is String) return arg.isEmpty;
+
+    if (arg is List) return arg.isEmpty;
+
+    if (arg is Map) return arg.isEmpty;
+
+    return arg == null;
+  }
+
+  @override
+  String get name => 'isEmpty';
+}
+
+class _LengthOp implements ExprCallable {
+  @override
+  int arity() => 1;
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length != arity()) {
+      throw 'Incorrect argument size';
+    }
+
+    final arg = toValue(evaluator, arguments.first);
+    if (arg == null) return null;
+
+    if (arg is String) return arg.length;
+
+    if (arg is List) return arg.length;
+
+    if (arg is Map) return arg.length;
+
+    return null;
+  }
+
+  @override
+  String get name => 'length';
 }
 
 class _NumberFormatOp implements ExprCallable {

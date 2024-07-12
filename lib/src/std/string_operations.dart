@@ -6,7 +6,6 @@ abstract class StringOperations {
   static Map<String, ExprCallable> functions = {
     'concat': ConcatOp(),
     'concatenate': ConcatOp(),
-    'strLength': LengthOp(),
     'substring': _SubStringOp(),
   };
 }
@@ -33,23 +32,6 @@ class _SubStringOp implements ExprCallable {
 
   @override
   String get name => 'substring';
-}
-
-class LengthOp implements ExprCallable {
-  @override
-  int arity() => 1;
-
-  @override
-  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
-    if (arguments.length != arity()) {
-      throw 'Incorrect argument size';
-    }
-
-    return toValue<String>(evaluator, arguments.first)?.length;
-  }
-
-  @override
-  String get name => 'length';
 }
 
 class ConcatOp implements ExprCallable {

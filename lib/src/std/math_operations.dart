@@ -14,7 +14,34 @@ abstract class MathOperations {
     'ceil': _CeilOp(),
     'floor': _FloorOp(),
     'abs': _AbsOp(),
+    'clamp': _ClampOp(),
   };
+}
+
+class _ClampOp implements ExprCallable {
+  @override
+  int arity() {
+    return 3; // Expect 3 arguments: value, min, max
+  }
+
+  @override
+  Object? call(ASTEvaluator evaluator, List<Object> arguments) {
+    if (arguments.length != arity()) {
+      return ArgumentError('Can only resolve 3 arguments');
+    }
+
+    final value = toValue<num>(evaluator, arguments[0]);
+    final min = toValue<num>(evaluator, arguments[1]);
+    final max = toValue<num>(evaluator, arguments[2]);
+
+    if (value == null || min == null || max == null) return null;
+
+    // Perform clamp operation
+    return value.clamp(min, max);
+  }
+
+  @override
+  String get name => 'clamp';
 }
 
 class _ModuloOp implements ExprCallable {

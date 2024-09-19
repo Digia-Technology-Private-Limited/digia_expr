@@ -1,13 +1,15 @@
-import 'ast.dart';
-
 class ExprContext {
   final String name;
   ExprContext? _enclosing;
 
-  final Map<String, Object?> variables;
+  final Map<String, Object?> _variables;
 
-  ExprContext({this.name = '', required this.variables, ExprContext? enclosing})
-      : _enclosing = enclosing;
+  ExprContext({
+    this.name = '',
+    required Map<String, Object?> variables,
+    ExprContext? enclosing,
+  })  : _enclosing = enclosing,
+        _variables = variables;
 
   appendEnclosing(ExprContext enclosing) {
     if (_enclosing == null) {
@@ -19,16 +21,18 @@ class ExprContext {
   }
 
   (bool, Object?) get(String key) {
-    if (variables.containsKey(key)) {
-      return (true, variables[key]);
+    if (_variables.containsKey(key)) {
+      return (true, _variables[key]);
     }
 
     return _enclosing?.get(key) ?? (false, null);
   }
 
-  put(String key, ASTNode value) {
-    if (variables.containsKey(key)) {
-      return variables[key];
-    }
+  ExprContext copyWithNewVariables({Map<String, Object?>? newVariables}) {
+    return ExprContext(
+      name: name,
+      variables: Map.from(_variables)..addAll(newVariables ?? {}),
+      enclosing: _enclosing,
+    );
   }
 }

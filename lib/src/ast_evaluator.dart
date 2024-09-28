@@ -1,4 +1,5 @@
 import 'ast.dart';
+import 'base_expr_context.dart';
 import 'expr_context.dart';
 import 'std/json_operations.dart';
 import 'std/std_functions.dart';
@@ -10,9 +11,9 @@ class ASTEvaluator {
   late ExprContext _context;
 
   ASTEvaluator({ExprContext? context}) {
-    final std = ExprContext(variables: StdLibFunctions.functions);
+    final std = BasicExprContext(variables: StdLibFunctions.functions);
     if (context != null) {
-      context.appendEnclosing(std);
+      context.addContextAtTail(std);
       _context = context;
       return;
     }
@@ -47,23 +48,23 @@ class ASTEvaluator {
         result = callee.call(this, node.expressions);
 
       case ASTVariable():
-        final (variableFound, valueOfVariable) = _context.get(node.name.lexeme);
-        if (!variableFound) {
+        final record = _context.getValue(node.name.lexeme);
+        if (!record.found) {
           throw '${node.name.lexeme} is not defined';
         }
 
-        if (valueOfVariable == null) return null;
+        if (record.value == null) return null;
 
-        result = (valueOfVariable is ASTNode)
-            ? eval(valueOfVariable)
-            : valueOfVariable;
+        result = (record.value is ASTNode)
+            ? eval(record.value as ASTNode)
+            : record.value;
 
       case ASTGetExpr():
         final object = eval(node.expr);
 
         if (object == null) return null;
 
-        if (object is Map<String, dynamic>) {
+        if (object is Map) {
           result = JsonGetOp().call(this, [object, node.name.lexeme]);
           break;
         }

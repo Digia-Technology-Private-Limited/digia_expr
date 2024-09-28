@@ -11,7 +11,7 @@ void main() {
     test('Math functions: sum & mul.', () {
       final code = 'sum(mul(x,4),y)';
 
-      final context = ExprContext(variables: {'x': 10, 'y': 2});
+      final context = BasicExprContext(variables: {'x': 10, 'y': 2});
 
       final result = Expression.eval(code, context);
       expect(result, 42);
@@ -28,8 +28,8 @@ void main() {
       test('Single String Interpolation', () {
         final code = r'Hello ${aVar}!';
 
-        final result =
-            Expression.eval(code, ExprContext(variables: {'aVar': 'World'}));
+        final result = Expression.eval(
+            code, BasicExprContext(variables: {'aVar': 'World'}));
         expect(result, 'Hello World!');
       });
 
@@ -37,7 +37,7 @@ void main() {
         final code = r'Hello ${a} & ${b}!';
 
         final result = Expression.eval(
-            code, ExprContext(variables: {'a': 'Alpha', 'b': 'Beta'}));
+            code, BasicExprContext(variables: {'a': 'Alpha', 'b': 'Beta'}));
         expect(result, 'Hello Alpha & Beta!');
       });
 
@@ -45,7 +45,7 @@ void main() {
         final code = r'${a}';
 
         final result = Expression.eval(
-            code, ExprContext(variables: {'a': 'Alpha', 'b': 'Beta'}));
+            code, BasicExprContext(variables: {'a': 'Alpha', 'b': 'Beta'}));
         expect(result, 'Alpha');
       });
 
@@ -53,7 +53,7 @@ void main() {
         final code = r'${a}, ${b}';
 
         final result = Expression.eval(
-            code, ExprContext(variables: {'a': 'Alpha', 'b': 'Beta'}));
+            code, BasicExprContext(variables: {'a': 'Alpha', 'b': 'Beta'}));
         expect(result, 'Alpha, Beta');
       });
     });
@@ -62,7 +62,7 @@ void main() {
 
       final result = Expression.eval(
           code,
-          ExprContext(variables: {
+          BasicExprContext(variables: {
             'person': ExprClassInstance(
                 klass: ExprClass(
                     name: 'Person', fields: {'name': 'Tushar'}, methods: {}))
@@ -78,7 +78,7 @@ void main() {
 
       final result = Expression.eval(
           code,
-          ExprContext(variables: {
+          BasicExprContext(variables: {
             'storage': ExprClassInstance(
                 klass: ExprClass(name: 'LocalStorage', fields: {}, methods: {
               'get': _TestMethod(
@@ -94,7 +94,7 @@ void main() {
 
       final result = Expression.eval(
           code,
-          ExprContext(variables: {
+          BasicExprContext(variables: {
             'a': ExprClassInstance(
                 klass: ExprClass(name: 'Test', fields: {
               'b': ExprClassInstance(
@@ -116,7 +116,7 @@ void main() {
 
       final result = Expression.eval(
           code,
-          ExprContext(variables: {
+          BasicExprContext(variables: {
             'jsonObject': {
               'a': {'b': 10, 'c': 2},
             }
@@ -130,7 +130,7 @@ void main() {
 
       final result = Expression.eval(
           code,
-          ExprContext(variables: {
+          BasicExprContext(variables: {
             'dataSource': {
               'data': {
                 'liveLearning': {'img': testValue}
@@ -161,7 +161,7 @@ void main() {
       final output = '3rd June';
 
       final result = Expression.eval(r"${isoFormat(isoDate, 'Do MMMM')}",
-          ExprContext(variables: {'isoDate': testValue}));
+          BasicExprContext(variables: {'isoDate': testValue}));
       expect(result, output);
     });
 
@@ -170,7 +170,7 @@ void main() {
       final output = '29th February';
 
       final result = Expression.eval(r"${isoFormat(isoDate, 'Do MMMM')}",
-          ExprContext(variables: {'isoDate': testValue}));
+          BasicExprContext(variables: {'isoDate': testValue}));
       expect(result, output);
     });
 
@@ -213,15 +213,16 @@ void main() {
       final code =
           r"${condition(isEqual(a, b), 'Note: NPCI may flag repeat transactions of the same amount as duplicates and might reject them. As a precaution, we will deduct ₹${numberFormat(b)} from your account.', 'Note: You will receive confirmation emails on each steps')}";
       expect(
-          Expression.eval(code, ExprContext(variables: {'a': 1001, 'b': 1001})),
+          Expression.eval(
+              code, BasicExprContext(variables: {'a': 1001, 'b': 1001})),
           'Note: NPCI may flag repeat transactions of the same amount as duplicates and might reject them. As a precaution, we will deduct ₹1,001 from your account.');
     });
 
     test('String Length', () {
       final code = r'${isEqual(strLength(x), length)}';
       expect(
-          Expression.eval(
-              code, ExprContext(variables: {'x': 'hello-world', 'length': 11})),
+          Expression.eval(code,
+              BasicExprContext(variables: {'x': 'hello-world', 'length': 11})),
           true);
     });
 
@@ -240,7 +241,7 @@ void main() {
       };
       expect(
           Expression.eval(r'${qsEncode(payload)}',
-              ExprContext(variables: {'payload': payload})),
+              BasicExprContext(variables: {'payload': payload})),
           'key1=11&key2=str&key3=false&key4=0&key5[cKey1]=true&key6=0&key6=1&key7[cKey1]=233&key7[cKey2]=false');
     });
 

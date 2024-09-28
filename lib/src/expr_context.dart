@@ -1,38 +1,34 @@
-class ExprContext {
-  final String name;
-  ExprContext? _enclosing;
+/// An abstract class representing the context for expression evaluation.
+/// This context provides access to variables and supports hierarchical scoping.
+abstract class ExprContext {
+  /// The name of this context, useful for debugging and logging.
+  String get name;
 
-  final Map<String, Object?> _variables;
+  /// The enclosing context, if any. Used for hierarchical variable lookup.
+  ExprContext? get enclosing;
 
-  ExprContext({
-    this.name = '',
-    required Map<String, Object?> variables,
-    ExprContext? enclosing,
-  })  : _enclosing = enclosing,
-        _variables = variables;
+  set enclosing(ExprContext? context);
 
-  appendEnclosing(ExprContext enclosing) {
-    if (_enclosing == null) {
-      _enclosing = enclosing;
-      return;
+  /// Retrieves a value from the context.
+  ///
+  /// Returns a tuple where:
+  /// - The first element is a boolean indicating if the key was found.
+  /// - The second element is the value associated with the key, or null if not found.
+  ///
+  /// This method should search in the current context first, then in enclosing contexts.
+  ({bool found, Object? value}) getValue(String key);
+
+  /// Adds a context to the tail of the current context chain.
+  ///
+  /// If this context doesn't have an enclosing context, the new context becomes
+  /// the enclosing context. Otherwise, it's added to the end of the chain.
+  ///
+  /// @param context The ExprContext to add to the tail of the chain.
+  void addContextAtTail(ExprContext context) {
+    if (enclosing == null) {
+      enclosing = context;
+    } else {
+      enclosing!.addContextAtTail(context);
     }
-
-    _enclosing!.appendEnclosing(enclosing);
-  }
-
-  (bool, Object?) get(String key) {
-    if (_variables.containsKey(key)) {
-      return (true, _variables[key]);
-    }
-
-    return _enclosing?.get(key) ?? (false, null);
-  }
-
-  ExprContext copyWithNewVariables({Map<String, Object?>? newVariables}) {
-    return ExprContext(
-      name: name,
-      variables: Map.from(_variables)..addAll(newVariables ?? {}),
-      enclosing: _enclosing,
-    );
   }
 }

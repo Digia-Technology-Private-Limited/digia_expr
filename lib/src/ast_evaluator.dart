@@ -69,11 +69,11 @@ class ASTEvaluator {
           break;
         }
 
-        if (object is! ExprClassInstance) {
+        if (object is! ExprInstance) {
           throw 'Only class instances have properties';
         }
 
-        result = object.get(node.name);
+        result = object.getField(node.name.lexeme);
 
       default:
         throw UnimplementedError('${node.runtimeType} is not implemented');

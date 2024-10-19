@@ -50,26 +50,31 @@ class ExprClass extends ExprCallable {
   String get name => _name;
 }
 
-class ExprClassInstance {
+abstract class ExprInstance {
+  Object? getField(String name);
+}
+
+class ExprClassInstance implements ExprInstance {
   ExprClass klass;
 
   ExprClassInstance({
     required this.klass,
   });
 
-  Object? get(Token name) {
-    if (klass.fields.containsKey(name.lexeme)) {
-      return klass.fields[name.lexeme];
-    }
-
-    if (klass.methods.containsKey(name.lexeme)) {
-      return klass.methods[name.lexeme];
-    }
-
-    throw 'Undefined property ${name.lexeme}, name';
-  }
-
   set(Token name, Object value) {
     klass.fields[name.lexeme] = value;
+  }
+
+  @override
+  Object? getField(String name) {
+    if (klass.fields.containsKey(name)) {
+      return klass.fields[name];
+    }
+
+    if (klass.methods.containsKey(name)) {
+      return klass.methods[name];
+    }
+
+    throw 'Undefined property ${name}, name';
   }
 }

@@ -1,3 +1,7 @@
+## [0.0.13] - 2024-11-05
+
+- Changes to support State Containers in digia_ui.
+
 ## [0.0.12] - 2024-08-04
 
 - Version bumps to make it work it with latest flutter version + digia_ui

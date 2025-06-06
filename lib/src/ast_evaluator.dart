@@ -1,24 +1,12 @@
-import 'ast.dart';
-import 'base_expr_context.dart';
-import 'expr_context.dart';
+import '../digia_expr.dart';
 import 'std/json_operations.dart';
-import 'std/std_functions.dart';
 import 'std/string_operations.dart';
 
-import 'types.dart';
-
 class ASTEvaluator {
-  late ExprContext _context;
+  final ExprContext _context;
 
-  ASTEvaluator({ExprContext? context}) {
-    final std = BasicExprContext(variables: StdLibFunctions.functions);
-    if (context != null) {
-      context.addContextAtTail(std);
-      _context = context;
-      return;
-    }
-    _context = std;
-  }
+  ASTEvaluator(ExprContext? context)
+      : _context = context ?? BasicExprContext(variables: {});
 
   Object? eval(ASTNode node) {
     Object? result;

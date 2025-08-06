@@ -1,4 +1,4 @@
-# digia_expr
+# Digia Expressions
 
 A powerful and flexible expression evaluator for Dart, designed to dynamically process expressions with support for variables, custom functions, and string interpolation. **Note:** This package is developed for internal use within `digia_ui` and is not intended for general public consumption.
 

@@ -1,19 +1,12 @@
 import 'package:digia_expr/digia_expr.dart';
 
 void main() {
-  print('=== Digia Expression Library - Extensible Visitor Pattern ===\n');
+  // final code = "'Hello World \${sum(mul(x,4),y)}!'";
+  final code = "condition(condition(true, false, true), 'Hey', 'Hello')";
 
-  print('=== Example 1: Expression Evaluation ===');
-  final code = "user.name";
-  final context = BasicExprContext(variables: {
-    'user': {'name': 'John Doe', 'age': 30}
-  });
+  final context = BasicExprContext(variables: {'x': 10, 'y': 2});
 
-  try {
-    final result = Expression.eval(code, context);
-    print('Expression: $code');
-    print('Result: $result\n');
-  } catch (e) {
-    print('Error: $e\n');
-  }
+  final result = Expression.eval(code, context);
+  print('---------ASTEvaluator----------');
+  print(result);
 }

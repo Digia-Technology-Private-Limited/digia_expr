@@ -15,6 +15,7 @@ abstract class Visitor<T> {
   T visitASTStringLiteral(ASTStringLiteral node);
   T visitASTVariable(ASTVariable node);
   T visitASTGetExpr(ASTGetExpr node);
+  T visitASTBooleanLiteral(ASTBooleanLiteral node);
 }
 
 class ASTVisitorEvaluator extends Visitor<Object?> {
@@ -52,6 +53,11 @@ class ASTVisitorEvaluator extends Visitor<Object?> {
 
   @override
   Object? visitASTStringLiteral(ASTStringLiteral node) {
+    return node.value;
+  }
+
+  @override
+  Object? visitASTBooleanLiteral(ASTBooleanLiteral node) {
     return node.value;
   }
 

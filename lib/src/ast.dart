@@ -33,6 +33,9 @@ class ASTBooleanLiteral extends ASTNode {
   final Token token;
 
   ASTBooleanLiteral({required this.token});
+
+  @override
+  T visit<T>(Visitor<T> visitor) => visitor.visitASTBooleanLiteral(this);
 }
 
 class ASTProgram extends ASTNode {
